@@ -1,28 +1,18 @@
-/*  tsconfig.json */
 {
   "compilerOptions": {
-    /* 基础配置 */
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "removeComments": false,
-    "declaration": true,
-    "sourceMap": true,
-
-    /* 强类型检查配置 */
-    "strict": true,
-    "noImplicitAny": false,
-
-    /* 模块分析配置 */
-    "baseUrl": ".",
-    "outDir": "./lib",
-    "esModuleInterop": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "target": "es5",
+    "module": "es2015",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "strict": false,
+    "sourceMap": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declarationDir": "dist/types",
+    "outDir": "dist/lib",
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
