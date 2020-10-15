@@ -79,5 +79,8 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "rollup-plugin-typescript2": "<=0.20.0"
+  }
 }
