@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./../dist/vue-next-core-write.global.js"></script>
+  <script>
+    const root = document.documentElement.querySelector('#root')
+    const { render } = Vue
+
+    console.log(render)
+    const state = {
+      name: 'hello-world'
+    }
+    const VNode = {
+      type: 'div',
+      props: null,
+      text: 'hello' + state.name,
+      children: [{
+        type: 'span',
+        props: null,
+        text: 'childer' + state.name,
+        children: {
+          type: 'a',
+          props: null,
+          text: 'aaa',
+          children: null
+        }
+      }, {
+        type: 'p',
+        props: null,
+        text: 'child+tow'
+      }]
+    }
+    render(VNode, root)
+
+  </script>
+</body>
+
+</html>

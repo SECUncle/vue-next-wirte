@@ -2,13 +2,9 @@
  * @Description:
  * @Version: 2.0
  * @Autor: wangyaju
- * @Date: 2020-10-14 17:00:15
+ * @Date: 2020-10-16 11:24:05
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-15 16:27:09
+ * @LastEditTime: 2020-10-16 17:17:33
  */
-import { effect } from './reactive'
-function aa() {
-  console.log('add')
-}
-
-effect(aa)
+export { effect, reactive } from "./reactivity/src";
+export { render } from "./runtime-dom/src";

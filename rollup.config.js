@@ -1,40 +1,48 @@
-import json from 'rollup-plugin-json'
-import nodeResolve from 'rollup-plugin-node-resolve'
+/*
+ * @Description:
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-15 17:59:40
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-16 15:59:20
+ */
+import json from "rollup-plugin-json";
+import nodeResolve from "rollup-plugin-node-resolve";
 // import babel from "rollup-plugin-babel";
-import commonjs from 'rollup-plugin-commonjs'
+import commonjs from "rollup-plugin-commonjs";
 // import { uglify } from "rollup-plugin-uglify";
 // import { eslint } from 'rollup-plugin-eslint'
-import pkg, { version } from './package.json'
-import typescript from 'rollup-plugin-typescript2'
+import pkg, { version } from "./package.json";
+import typescript from "rollup-plugin-typescript2";
 
 // import replace  from 'rollup-plugin-replace';
-const path = require('path')
+const path = require("path");
 
-const VERSION = process.env.VERSION || version
-const copyright = new Date().getFullYear() > 2020 ? '2020-' + new Date().getFullYear() : 2018
+const VERSION = process.env.VERSION || version;
+const copyright = new Date().getFullYear() > 2020 ? "2020-" + new Date().getFullYear() : 2018;
 
 const banner =
-  '/*!\n' +
-  ' * idebug v' +
+  "/*!\n" +
+  " * idebug v" +
   VERSION +
-  '\n' +
-  ' * (c) ' +
+  "\n" +
+  " * (c) " +
   copyright +
-  ' Weich\n' +
-  ' * Released under the MIT License.\n' +
-  ' */'
+  " Weich\n" +
+  " * Released under the MIT License.\n" +
+  " */";
 
-const extensions = ['.js', '.ts']
+const extensions = [".js", ".ts"];
 const resolve = function(...args) {
-  return path.resolve(__dirname, ...args)
-}
+  return path.resolve(__dirname, ...args);
+};
 export default {
   input: `src/index.ts`,
   output: [
-    { file: 'dist/vue-next-core-write.global.js', format: 'iife', sourcemap: true, name: 'Vue' }
+    { file: "dist/vue-next-core-write.global.js", format: "iife", sourcemap: true, name: "Vue" }
   ],
   watch: {
-    include: 'src/**'
+    include: "src/**"
   },
 
   plugins: [
@@ -66,4 +74,4 @@ export default {
     //   },
     // }),
   ]
-}
+};
