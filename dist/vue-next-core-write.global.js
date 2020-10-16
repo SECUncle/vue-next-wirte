@@ -31,7 +31,7 @@ var Vue = (function (exports) {
    * @Autor: wangyaju
    * @Date: 2020-10-16 16:08:51
    * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-16 17:04:38
+   * @LastEditTime: 2020-10-16 17:21:37
    */
   var nodeOps = {
       insert: function (child, parent, anchor) {
@@ -57,14 +57,6 @@ var Vue = (function (exports) {
       }
   };
 
-  /*
-   * @Description:
-   * @Version: 2.0
-   * @Autor: wangyaju
-   * @Date: 2020-10-16 17:11:49
-   * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-16 17:13:31
-   */
   function render(vnode, container) {
       container._vnode = vnode;
       console.log(container, nodeOps);

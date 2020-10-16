@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Autor: wangyaju
- * @Date: 2020-10-16 17:11:49
- * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-16 17:13:31
- */
 import { nodeOps } from "./nodeOps";
 export function render(vnode, container) {
   container._vnode = vnode;
