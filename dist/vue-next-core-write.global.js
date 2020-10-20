@@ -44,8 +44,45 @@ var Vue = (function (exports) {
    * @LastEditors: wangyaju
    * @LastEditTime: 2020-10-20 15:49:58
    */
+  var activeEffect;
   function effect(fn) {
+      activeEffect = fn;
       fn();
+  }
+  function reactive(target) {
+      return new Proxy(target, {
+          get: function (target, key, receiver) {
+              var res = Reflect.get(target, key, receiver);
+              track(target, key);
+              return res;
+          },
+          set: function (target, key, value, receiver) {
+              var res = Reflect.set(target, key, value, receiver);
+              trigger(target, key);
+              return res;
+          }
+      });
+  }
+  var targetMap = new WeakMap();
+  function track(target, key) {
+      var depsMap = targetMap.get(target);
+      if (!depsMap) {
+          targetMap.set(target, (depsMap = new Map()));
+      }
+      var deps = depsMap.get(key);
+      if (!deps) {
+          depsMap.set(key, (deps = new Set()));
+      }
+      if (activeEffect && !deps.has(activeEffect)) {
+          deps.add(activeEffect);
+      }
+  }
+  function trigger(target, key, val) {
+      var depsMap = targetMap.get(target);
+      if (!depsMap)
+          return;
+      var effects = depsMap.get(key);
+      effects && effects.forEach(function (effect) { return effect(); });
   }
 
   /*
@@ -283,6 +320,8 @@ var Vue = (function (exports) {
       return result;
   };
 
+  exports.effect = effect;
+  exports.reactive = reactive;
   exports.render = render;
 
   return exports;

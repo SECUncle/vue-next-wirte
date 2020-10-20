@@ -1,0 +1,85 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-16 15:47:31
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-20 18:11:22
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./../dist/vue-next-core-write.global.js"></script>
+  <script>
+
+    const { render, effect, reactive } = Vue
+
+    let state = reactive({
+      name: 'hello-world',
+      count: 0
+    })
+
+    function handleClick() {
+      state.count = state.count + 1
+    }
+
+
+
+    const Counter = {
+      setup() {
+        console.log('only once')
+        return () => ({
+          type: 'div',
+          props: null,
+          children: [
+            {
+              type: 'h2',
+              props: null,
+              children: state.name
+            },
+            {
+              type: 'div',
+              props: { style: 'color: red' },
+              children: '数量： ' + state.count
+            },
+            {
+              type: 'button',
+              props: { onClick: handleClick },
+              children: '点击一下'
+            },
+            {
+              type: Child,
+              props: null,
+              children: ''
+            }
+          ]
+        })
+      }
+    }
+
+    const Child = {
+      setup() {
+        return () => ({
+          type: 'div',
+          props: null,
+          children: 'child'
+        })
+      }
+    }
+
+
+    render({ type: Counter, props: null, children: '' }, root)
+
+
+  </script>
+</body>
+
+</html>

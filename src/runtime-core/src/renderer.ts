@@ -4,10 +4,12 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 17:18:41
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-20 17:37:10
+ * @LastEditTime: 2020-10-20 18:56:28
  */
-import { nodeOps } from "../../runtime-dom/src/nodeOps";
-import { effect } from "../../reactivity/src/index";
+import { nodeOps } from "@vue/runtime-dom";
+import { effect } from "@vue/reactivity";
+// console.log(nodeOps, "nodeOps");
+
 let rootContainer;
 
 export function render(vnode, container) {

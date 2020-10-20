@@ -1,0 +1,102 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-16 15:47:31
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-20 17:56:33
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./../dist/vue-next-core-write.global.js"></script>
+  <script>
+    const { render } = Vue
+
+    let state = reactive({
+      name: 'hello-world',
+      count: 0
+    })
+
+    function handleClick() {
+      state.count = state.count + 1
+    }
+
+
+    render(
+      {
+        type: 'div',
+        props: null,
+        children: [
+          {
+            type: 'div',
+            props: {
+              key: 1
+            },
+            children: '被点击： ' + state.count
+          },
+          {
+            type: 'button',
+            props: {
+              onClick: handleClick
+            },
+            children: '点击'
+          }
+        ]
+      },
+      root
+    )
+
+
+    /*******实现proxy方法***/
+
+
+    function reactive(target) {
+      return new Proxy(target, {
+        set(target, key, value, receiver) {
+          const res = Reflect.set(target, key, value, receiver)
+          render(
+            {
+              type: 'div',
+              props: null,
+              children: [
+                {
+                  type: 'div',
+                  props: {
+                    key: 1
+                  },
+                  children: '被点击： ' + state.count
+                },
+                {
+                  type: 'button',
+                  props: {
+                    onClick: handleClick
+                  },
+                  children: '点击'
+                }
+              ]
+            },
+            root
+          )
+
+          return res
+        }
+      })
+    }
+
+
+
+
+
+  </script>
+</body>
+
+</html>

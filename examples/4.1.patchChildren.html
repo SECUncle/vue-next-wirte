@@ -1,0 +1,64 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-16 15:47:31
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-20 18:22:12
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./../dist/vue-next-core-write.global.js"></script>
+  <script>
+
+    const { render, effect, reactive } = Vue
+
+    let state = reactive({
+      name: 'vue-next',
+      count: 0,
+      toggle: true
+    })
+
+    function handleClick() {
+      state.toggle = !state.toggle
+    }
+
+    effect(() => {
+      const VNode = {
+        type: 'div',
+        props: {
+          onClick: handleClick
+        },
+        children: state.toggle
+          ? [
+            {
+              type: 'div', props: {
+                key: 1
+              }, children: 'child1'
+            },
+            {
+              type: 'div', props: {
+                key: 2
+              }, children: 'child2'
+            }
+          ]
+          : 'color: blue'
+      }
+
+      render(VNode, root)
+    })
+
+
+  </script>
+</body>
+
+</html>
