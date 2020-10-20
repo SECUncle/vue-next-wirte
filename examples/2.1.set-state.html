@@ -1,0 +1,103 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-16 15:47:31
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-20 17:27:29
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="./../dist/vue-next-core-write.global.js"></script>
+  <script>
+    const { render } = Vue
+
+    let state = {
+      name: 'hello-world',
+      count: 0
+    }
+
+    function handleClick() {
+      const newCount = state.count + 1
+      setState({
+        count: newCount
+      })
+      console.log(newCount, 'newCount')
+    }
+
+
+    render(
+      {
+        type: 'div',
+        props: null,
+        children: [
+          {
+            type: 'div',
+            props: {
+              key: 1
+            },
+            children: '被点击： ' + state.count
+          },
+          {
+            type: 'button',
+            props: {
+              onClick: handleClick
+            },
+            children: '点击'
+          }
+        ]
+      },
+      root
+    )
+
+
+    /*******实现setstate方法***/
+
+
+    function setState(newState) {
+      state = {
+        ...state,
+        ...newState
+      }
+
+      console.log(state)
+      render(
+        {
+          type: 'div',
+          props: null,
+          children: [
+            {
+              type: 'div',
+              props: {
+                key: 1
+              },
+              children: '被点击： ' + state.count
+            },
+            {
+              type: 'button',
+              props: {
+                onClick: handleClick
+              },
+              children: '点击'
+            }
+          ]
+        },
+        root
+      )
+    }
+
+
+
+  </script>
+</body>
+
+</html>

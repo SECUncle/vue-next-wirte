@@ -4,7 +4,7 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 17:18:41
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-20 16:16:41
+ * @LastEditTime: 2020-10-20 17:37:10
  */
 import { nodeOps } from "../../runtime-dom/src/nodeOps";
 import { effect } from "../../reactivity/src/index";
@@ -14,6 +14,7 @@ export function render(vnode, container) {
   patch(container._vnode || null, vnode, container);
   container._vnode = vnode; // 下载渲染时，container._vnode就成为旧节点
 }
+
 const patch = (n1, n2, container) => {
   if (typeof n2.type === "string") {
     processElement(n1, n2, container);
@@ -62,6 +63,7 @@ const mountElement = (vnode, container) => {
   } else if (Array.isArray(children)) {
     mountChildren(children, el);
   }
+  nodeOps.insert(el, container, null);
 };
 
 const patchElement = (n1, n2, container) => {
@@ -69,16 +71,17 @@ const patchElement = (n1, n2, container) => {
   const oldProps = n1.props;
   const newProps = n2.props;
 
-  patch(el, n2, oldProps, newProps);
+  patchProps(el, n2, oldProps, newProps);
   patchChildren(n1, n2, el);
 };
 
 const patchProps = (el, n2, oldProps, newProps) => {
   if (oldProps !== newProps) {
     // 新的属性有，就渲染
+
     for (const key in newProps) {
-      const next = newProps(key);
-      const prev = oldProps(key);
+      const next = newProps[key];
+      const prev = oldProps[key];
       if (next !== prev) {
         hostPatchProps(el, key, prev, next);
       }

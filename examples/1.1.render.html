@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: wangyaju
+ * @Date: 2020-10-16 15:47:31
+ * @LastEditors: wangyaju
+ * @LastEditTime: 2020-10-20 17:09:29
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,34 +19,37 @@
   <div id="root"></div>
   <script src="./../dist/vue-next-core-write.global.js"></script>
   <script>
-    const root = document.documentElement.querySelector('#root')
     const { render } = Vue
 
-    console.log(render)
     const state = {
       name: 'hello-world'
     }
+
     const VNode = {
       type: 'div',
-      props: null,
-      text: 'hello' + state.name,
+      props: {
+        style: 'color:red',
+        onClick: () => alert('点击')
+      },
       children: [{
         type: 'span',
         props: null,
-        text: 'childer' + state.name,
         children: {
           type: 'a',
           props: null,
           text: 'aaa',
-          children: null
+          children: state.name
         }
       }, {
         type: 'p',
         props: null,
-        text: 'child+tow'
+        children: 'child+tow'
       }]
     }
+
+
     render(VNode, root)
+
 
   </script>
 </body>
