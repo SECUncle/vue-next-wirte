@@ -4,7 +4,7 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 16:08:51
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-16 17:21:37
+ * @LastEditTime: 2020-10-20 14:58:19
  */
 export const nodeOps = {
   insert: (child, parent, anchor) => {
@@ -19,6 +19,9 @@ export const nodeOps = {
     if (parent) {
       parent.removeChild(child);
     }
+  },
+  setElementText: (el, text) => {
+    el.textContent = text;
   },
   createElement: (type): Element => {
     const ele = document.createElement(type);
