@@ -4,10 +4,16 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:33:52
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-21 17:00:12
+ * @LastEditTime: 2020-10-21 17:24:17
  */
+import {
+  mutableHandlers,
 
+} from './baseHandlers'
 
+import {
+  mutableCollectionHandlers
+} from './collectionHandlers'
 export const enum ReactiveFlags {
   SKIP = '__v_skip'
   IS_REACTIVE = '__v_isReactive'
@@ -54,6 +60,45 @@ function getTargetType(value: Target) {
   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value) ? TargetType.INVALID : targetTypeMap(toRawType(value))
 }
 
-export function reactive(fn) {
-  fn();
+
+export function reactive(target: object) {
+  return createReactiveObject(
+    target,
+    false,
+    mutableHandlers,
+    mutableCollectionHandlers
+  )
+}
+
+function createReactiveObject(target: Target, isReadonly: boolean, baseHandlers: ProxyHandler<any>,
+  collectionHandlers: ProxyHandler<any> {
+    const proxyMap = isReadonly ? readonlyMap ? reactiveMap
+    const proxy = new Proxy(
+      target,
+      targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
+    )
+    proxyMap.set(target, proxy)
+return proxy
+  }
+export function isReactive(value: unknown): boolean {
+  if (isReadonly(value)) {
+    return isReactive((value as Target)[ReactiveFlags.RAW])
+  }
+  return !!(value && (value as Target)[ReactiveFlags.IS_REACTIVE])
+}
+
+export function isReadonly(value: unknown): boolean {
+  return !!(value && value as Target)[ReactiveFlags.IS_READONLY]
+}
+export function isProxy(value: unknown): boolean {
+  return isReactive(value) || isReadonly(value)
+}
+export function toRaw<T>(observed: T): T {
+  return (
+    (observed && toRaw((observed as Target)[ReactiveFlags.RAW])) || observed
+  )
+}
+export function markRaw<T extends object>(value: T): T {
+  default (value, ReactiveFlags.SKIP, true)
+  return value
 }
