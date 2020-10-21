@@ -4,7 +4,7 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:33:52
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-21 17:24:17
+ * @LastEditTime: 2020-10-21 17:27:01
  */
 import {
   mutableHandlers,
@@ -99,6 +99,6 @@ export function toRaw<T>(observed: T): T {
   )
 }
 export function markRaw<T extends object>(value: T): T {
-  default (value, ReactiveFlags.SKIP, true)
+  def(value, ReactiveFlags.SKIP, true)
   return value
 }
