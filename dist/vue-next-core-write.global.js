@@ -40,59 +40,11 @@ var Vue = (function (exports) {
    * @Description:
    * @Version: 2.0
    * @Autor: wangyaju
-   * @Date: 2020-10-16 15:25:15
-   * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-20 15:49:58
-   */
-  var activeEffect;
-  function effect(fn) {
-      activeEffect = fn;
-      fn();
-  }
-  function reactive(target) {
-      return new Proxy(target, {
-          get: function (target, key, receiver) {
-              var res = Reflect.get(target, key, receiver);
-              track(target, key);
-              return res;
-          },
-          set: function (target, key, value, receiver) {
-              var res = Reflect.set(target, key, value, receiver);
-              trigger(target, key);
-              return res;
-          }
-      });
-  }
-  var targetMap = new WeakMap();
-  function track(target, key) {
-      var depsMap = targetMap.get(target);
-      if (!depsMap) {
-          targetMap.set(target, (depsMap = new Map()));
-      }
-      var deps = depsMap.get(key);
-      if (!deps) {
-          depsMap.set(key, (deps = new Set()));
-      }
-      if (activeEffect && !deps.has(activeEffect)) {
-          deps.add(activeEffect);
-      }
-  }
-  function trigger(target, key, val) {
-      var depsMap = targetMap.get(target);
-      if (!depsMap)
-          return;
-      var effects = depsMap.get(key);
-      effects && effects.forEach(function (effect) { return effect(); });
-  }
-
-  /*
-   * @Description:
-   * @Version: 2.0
-   * @Autor: wangyaju
    * @Date: 2020-10-16 17:18:41
    * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-20 17:37:10
+   * @LastEditTime: 2020-10-20 19:10:10
    */
+  // console.log(nodeOps, "nodeOps");
   var rootContainer;
   function render(vnode, container) {
       patch(container._vnode || null, vnode, container);
@@ -116,6 +68,7 @@ var Vue = (function (exports) {
       //TODO
       var Component = instance.type;
       instance.render = Component.setup();
+      console.log(instance, "instance");
       effect(function () {
           instance.subTree = instance.render && instance.render();
           if (container === rootContainer) {
@@ -319,6 +272,55 @@ var Vue = (function (exports) {
       }
       return result;
   };
+
+  /*
+   * @Description:
+   * @Version: 2.0
+   * @Autor: wangyaju
+   * @Date: 2020-10-16 15:25:15
+   * @LastEditors: wangyaju
+   * @LastEditTime: 2020-10-20 15:49:58
+   */
+  var activeEffect;
+  function effect(fn) {
+      activeEffect = fn;
+      fn();
+  }
+  function reactive(target) {
+      return new Proxy(target, {
+          get: function (target, key, receiver) {
+              var res = Reflect.get(target, key, receiver);
+              track(target, key);
+              return res;
+          },
+          set: function (target, key, value, receiver) {
+              var res = Reflect.set(target, key, value, receiver);
+              trigger(target, key);
+              return res;
+          }
+      });
+  }
+  var targetMap = new WeakMap();
+  function track(target, key) {
+      var depsMap = targetMap.get(target);
+      if (!depsMap) {
+          targetMap.set(target, (depsMap = new Map()));
+      }
+      var deps = depsMap.get(key);
+      if (!deps) {
+          depsMap.set(key, (deps = new Set()));
+      }
+      if (activeEffect && !deps.has(activeEffect)) {
+          deps.add(activeEffect);
+      }
+  }
+  function trigger(target, key, val) {
+      var depsMap = targetMap.get(target);
+      if (!depsMap)
+          return;
+      var effects = depsMap.get(key);
+      effects && effects.forEach(function (effect) { return effect(); });
+  }
 
   exports.effect = effect;
   exports.reactive = reactive;

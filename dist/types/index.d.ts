@@ -1,2 +1,2 @@
-export { render } from "./runtime-core/src/renderer";
+export { render } from "./runtime-core/src";
 export { effect, reactive } from "./reactivity/src";

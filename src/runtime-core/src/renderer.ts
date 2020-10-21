@@ -4,9 +4,11 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 17:18:41
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-20 18:56:28
+ * @LastEditTime: 2020-10-20 19:10:10
  */
-import { nodeOps } from "@vue/runtime-dom";
+import { nodeOps } from "./../../runtime-dom/src";
+// import { nodeOps } from "@vue/runtime-dom/src/nodeOps";
+
 import { effect } from "@vue/reactivity";
 // console.log(nodeOps, "nodeOps");
 
@@ -35,6 +37,7 @@ const mountComponent = (vnode, container) => {
   //TODO
   const Component = instance.type;
   instance.render = Component.setup();
+  console.log(instance, "instance");
 
   effect(() => {
     instance.subTree = instance.render && instance.render();

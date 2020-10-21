@@ -4,8 +4,10 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:25:15
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-20 15:49:58
+ * @LastEditTime: 2020-10-21 15:45:52
  */
+
+export const ITERATE_KEY = Symbol("iterate");
 let activeEffect;
 export function effect(fn) {
   activeEffect = fn;
