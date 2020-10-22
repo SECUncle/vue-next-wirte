@@ -4,16 +4,16 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:33:52
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-22 16:47:47
+ * @LastEditTime: 2020-10-22 17:15:11
  */
 import {
   mutableHandlers
 } from './baseHandlers'
-import { isObject, toRawType, def } from '@vue/shared'
+import { isObject, toRawType, def } from '../../shared/src'
 import {
   mutableCollectionHandlers
 } from './collectionHandlers'
-import { unWrapRef, Ref } from './ref'
+import { UnwrapRef, Ref } from './ref'
 export const enum ReactiveFlags {
   SKIP = '__v_skip',
   IS_REACTIVE = '__v_isReactive',
@@ -59,7 +59,7 @@ function targetTypeMap(rawType: string) {
 function getTargetType(value: Target) {
   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value) ? TargetType.INVALID : targetTypeMap(toRawType(value))
 }
-type UNwrapNestedRefs<T> = T extends Ref ? T : unWrapRef<T>
+type UNwrapNestedRefs<T> = T extends Ref ? T : UnwrapRef<T>
 export function reactive<T extends object>(target: T): UNwrapNestedRefs<T>
 export function reactive(target: object) {
   return createReactiveObject(
@@ -102,4 +102,13 @@ export function toRaw<T>(observed: T): T {
 export function markRaw<T extends object>(value: T): T {
   def(value, ReactiveFlags.SKIP, true)
   return value
+}
+
+export function readonly(target) {
+  return createReactiveObject(
+    target,
+    true,
+    mutableHandlers,
+    mutableCollectionHandlers
+  )
 }

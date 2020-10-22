@@ -42,7 +42,7 @@ var Vue = (function (exports) {
    * @Autor: wangyaju
    * @Date: 2020-10-16 17:18:41
    * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-20 19:10:10
+   * @LastEditTime: 2020-10-22 15:53:33
    */
   // console.log(nodeOps, "nodeOps");
   var rootContainer;
@@ -65,7 +65,7 @@ var Vue = (function (exports) {
           render: null,
           subTree: null
       };
-      //TODO
+      // TODO
       var Component = instance.type;
       instance.render = Component.setup();
       console.log(instance, "instance");
@@ -221,7 +221,7 @@ var Vue = (function (exports) {
               patch(null, newChild, container);
           }
           else {
-              if (i == sequence[j]) {
+              if (i === sequence[j]) {
                   j--;
               }
               else {
@@ -279,7 +279,7 @@ var Vue = (function (exports) {
    * @Autor: wangyaju
    * @Date: 2020-10-16 15:25:15
    * @LastEditors: wangyaju
-   * @LastEditTime: 2020-10-20 15:49:58
+   * @LastEditTime: 2020-10-22 15:52:21
    */
   var activeEffect;
   function effect(fn) {
@@ -290,18 +290,18 @@ var Vue = (function (exports) {
       return new Proxy(target, {
           get: function (target, key, receiver) {
               var res = Reflect.get(target, key, receiver);
-              track(target, key);
+              track(target, null, key);
               return res;
           },
           set: function (target, key, value, receiver) {
               var res = Reflect.set(target, key, value, receiver);
-              trigger(target, key);
+              trigger(target, null, key);
               return res;
           }
       });
   }
   var targetMap = new WeakMap();
-  function track(target, key) {
+  function track(target, type, key) {
       var depsMap = targetMap.get(target);
       if (!depsMap) {
           targetMap.set(target, (depsMap = new Map()));
@@ -314,7 +314,7 @@ var Vue = (function (exports) {
           deps.add(activeEffect);
       }
   }
-  function trigger(target, key, val) {
+  function trigger(target, type, key, newValue, oldValue, oldTarget) {
       var depsMap = targetMap.get(target);
       if (!depsMap)
           return;
