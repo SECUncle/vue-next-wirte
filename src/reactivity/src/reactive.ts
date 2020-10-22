@@ -4,20 +4,20 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:33:52
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-21 17:27:01
+ * @LastEditTime: 2020-10-22 16:47:47
  */
 import {
-  mutableHandlers,
-
+  mutableHandlers
 } from './baseHandlers'
-
+import { isObject, toRawType, def } from '@vue/shared'
 import {
   mutableCollectionHandlers
 } from './collectionHandlers'
+import { unWrapRef, Ref } from './ref'
 export const enum ReactiveFlags {
-  SKIP = '__v_skip'
-  IS_REACTIVE = '__v_isReactive'
-  IS_READONLY = '__v_isReadonly'
+  SKIP = '__v_skip',
+  IS_REACTIVE = '__v_isReactive',
+  IS_READONLY = '__v_isReadonly',
   RAW = '__v_raw'
 }
 
@@ -59,8 +59,8 @@ function targetTypeMap(rawType: string) {
 function getTargetType(value: Target) {
   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value) ? TargetType.INVALID : targetTypeMap(toRawType(value))
 }
-
-
+type UNwrapNestedRefs<T> = T extends Ref ? T : unWrapRef<T>
+export function reactive<T extends object>(target: T): UNwrapNestedRefs<T>
 export function reactive(target: object) {
   return createReactiveObject(
     target,
@@ -70,16 +70,17 @@ export function reactive(target: object) {
   )
 }
 
-function createReactiveObject(target: Target, isReadonly: boolean, baseHandlers: ProxyHandler<any>,
-  collectionHandlers: ProxyHandler<any> {
-    const proxyMap = isReadonly ? readonlyMap ? reactiveMap
-    const proxy = new Proxy(
-      target,
-      targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
-    )
-    proxyMap.set(target, proxy)
-return proxy
-  }
+function createReactiveObject(target: Target, isReadonly: boolean, baseHandlers: ProxyHandler<any>, collectionHandlers: ProxyHandler<any>) {
+  const proxyMap = isReadonly ? readonlyMap : reactiveMap
+  const targetType = getTargetType(target)
+  const proxy = new Proxy(
+    target,
+    targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
+  )
+  proxyMap.set(target, proxy)
+  return proxy
+}
+
 export function isReactive(value: unknown): boolean {
   if (isReadonly(value)) {
     return isReactive((value as Target)[ReactiveFlags.RAW])

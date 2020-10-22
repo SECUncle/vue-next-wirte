@@ -4,7 +4,7 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 15:25:15
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-21 15:45:52
+ * @LastEditTime: 2020-10-22 15:52:21
  */
 
 export const ITERATE_KEY = Symbol("iterate");
@@ -17,12 +17,12 @@ export function reactive(target) {
   return new Proxy(target, {
     get(target, key, receiver) {
       const res = Reflect.get(target, key, receiver);
-      track(target, key);
+      track(target, null, key);
       return res;
     },
     set(target, key, value, receiver) {
       const res = Reflect.set(target, key, value, receiver);
-      trigger(target, key, value);
+      trigger(target, null, key);
       return res;
     }
   });
@@ -31,7 +31,7 @@ export function reactive(target) {
 type Dep = Set<any>;
 type KeyToDepMap = Map<any, Dep>;
 const targetMap = new WeakMap<any, KeyToDepMap>();
-export function track(target, key) {
+export function track(target, type, key) {
   let depsMap = targetMap.get(target);
   if (!depsMap) {
     targetMap.set(target, (depsMap = new Map()));
@@ -45,7 +45,7 @@ export function track(target, key) {
   }
 }
 
-export function trigger(target, key, val) {
+export function trigger(target, type, key?: unknown, newValue?: unknown, oldValue?: unknown, oldTarget?: Map<unknown, unknown> | Set<unknown>) {
   const depsMap = targetMap.get(target);
   if (!depsMap) return;
   const effects = depsMap.get(key);

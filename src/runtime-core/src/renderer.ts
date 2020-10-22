@@ -4,7 +4,7 @@
  * @Autor: wangyaju
  * @Date: 2020-10-16 17:18:41
  * @LastEditors: wangyaju
- * @LastEditTime: 2020-10-20 19:10:10
+ * @LastEditTime: 2020-10-22 15:53:33
  */
 import { nodeOps } from "./../../runtime-dom/src";
 // import { nodeOps } from "@vue/runtime-dom/src/nodeOps";
@@ -34,7 +34,7 @@ const mountComponent = (vnode, container) => {
     render: null,
     subTree: null
   };
-  //TODO
+  // TODO
   const Component = instance.type;
   instance.render = Component.setup();
   console.log(instance, "instance");
@@ -198,7 +198,7 @@ const patchKeyedChildren = (c1, c2, container) => {
       // 新增
       patch(null, newChild, container);
     } else {
-      if (i == sequence[j]) {
+      if (i === sequence[j]) {
         j--;
       } else {
         move(newChild, container, anchor);
@@ -214,7 +214,7 @@ const getSequence = arr => {
   // 子序列的索引 [0,1,3,5]
   const result = [0];
 
-  let i, j, u, v, c;
+  let i, j, u, v, c
   const len = arr.length;
   for (i = 0; i < len; i++) {
     const arrI = arr[i];

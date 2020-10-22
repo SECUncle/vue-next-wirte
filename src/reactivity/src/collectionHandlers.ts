@@ -1,4 +1,3 @@
-import { wrap } from "module";
 import { callbackify, isObject } from "util";
 import { track, trigger } from "./effect";
 import { TrackOpTypes, TriggerOpTypes } from "./operations";
@@ -33,7 +32,7 @@ function set() {
   trigger(target, TriggerOpTypes.SET, key, value, oldValue);
 }
 
-function deleteEntry(this: CollectionTypes, key: unknown) {}
+function deleteEntry(this: CollectionTypes, key: unknown) { }
 function clear(this: IterableCollections) {
   const result = target.clear();
   trigger(target, TriggerOpTypes.CLEAR, undefined, undefined, oldTarget);

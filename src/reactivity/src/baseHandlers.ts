@@ -24,6 +24,7 @@ function deleteProperty(target: object, key: string | symbol): boolean {
   const oldValue = (target as any)[key];
   const result = Reflect.deleteProperty(target, key);
   trigger(target, TriggerOpTypes.DELETE, key, undefined, oldValue);
+  return result
 }
 function has(target: object, key: string | symbol): boolean {
   const result = Reflect.has(target, key);
